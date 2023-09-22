@@ -16,17 +16,6 @@ let baseUrl = window.location.protocol + "//" + window.location.host;
 let books = [];
 let topics = [];
 
-const getAllBooks = async () => {
-  const [resBook, resTopics] = await Promise.all([
-    fetch(`${baseUrl}/data/book.json`),
-    fetch(`${baseUrl}/data/topic.json`)
-  ]);
-  const [books, topics] = await Promise.all([resBook.json(), resTopics.json()]);
-  await getAllTopics(topics);
-  if (books && topics) {
-    setDataTable(books);
-  }
-}
 
 const toggleModal = (modal, overlay) => {
   modal.classList.toggle('hidden');
@@ -66,9 +55,9 @@ const getAllBook = async () => {
   [books, topics] = await Promise.all([resBook.json(), resTopics.json()]);
   await getAllTopic(topics);
   console.log(books, topics)
-   if (books && topics){
-        setDataTable(books);
-    }
+  if (books && topics) {
+    setDataTable(books);
+  }
 }
 getAllBook();
 
@@ -90,28 +79,28 @@ const clearForm = () => {
   document.getElementById("select-topic").value = "";
 }
 const onSubmitForm = () => {
-    const name = document.getElementById("name").value;
-    const author = document.getElementById("author").value;
-    const topicId = document.getElementById("select-topic").value;
+  const name = document.getElementById("name").value;
+  const author = document.getElementById("author").value;
+  const topicId = document.getElementById("select-topic").value;
 
-    if (name.trim() === "" || author.trim() === "" || topicId === "null") {
-        alert("Please fill in all information and select a topic.");
-        return;
-    }
+  if (name.trim() === "" || author.trim() === "" || topicId === "null") {
+    alert("Please fill in all information and select a topic.");
+    return;
+  }
 
-    if (currentAction === 'Add') {
-        const newBook = {
-            id: Math.floor(Math.random() * (1000 - 6 + 1) + 6),
-            name,
-            author,
-            topic_id: parseInt(topicId),
-        };
+  if (currentAction === 'Add') {
+    const newBook = {
+      id: Math.floor(Math.random() * (1000 - 6 + 1) + 6),
+      name,
+      author,
+      topic_id: parseInt(topicId),
+    };
 
-        books.push(newBook);
+    books.push(newBook);
 
-        const tbody = document.querySelector("#table-book tbody");
-        const newRow = document.createElement("tr");
-        newRow.innerHTML = `
+    const tbody = document.querySelector("#table-book tbody");
+    const newRow = document.createElement("tr");
+    newRow.innerHTML = `
             <td>${books.length}</td>
             <td>${newBook.name}</td>
             <td>${newBook.author}</td>
@@ -122,52 +111,52 @@ const onSubmitForm = () => {
             </td>
         `;
 
-        tbody.appendChild(newRow);
-    } else {
-        books = books.map(item => {
-            if (item.id === idItem) {
-                item.name = name;
-                item.author = author;
-                item.topic_id = topicId;
-            }
-            return item;
-        });
+    tbody.appendChild(newRow);
+  } else {
+    books = books.map(item => {
+      if (item.id === idItem) {
+        item.name = name;
+        item.author = author;
+        item.topic_id = topicId;
+      }
+      return item;
+    });
 
-        setDataTable(books);
-    }
+    setDataTable(books);
+  }
 
-    toggleModal();
-    clearForm();
+  toggleModal();
+  clearForm();
 }
-const  onClickModalEdit = (id, name, author, topic_id) =>{
-    currentAction = 'Edit';
-    updateTitleModal();
-    toggleModal(modalAdd,overlayAdd);
-    if (id && name && author && author){
-        document.getElementById("name").value = name;
-        document.getElementById("author").value = author;
-        document.getElementById("select-topic").value = topic_id;
-        idItem = id;
+const onClickModalEdit = (id, name, author, topic_id) => {
+  currentAction = 'Edit';
+  updateTitleModal();
+  toggleModal(modalAdd, overlayAdd);
+  if (id && name && author && author) {
+    document.getElementById("name").value = name;
+    document.getElementById("author").value = author;
+    document.getElementById("select-topic").value = topic_id;
+    idItem = id;
 
-    }
+  }
 }
 const getTopicTitle = (topicId) => {
-    const topic = topics.find(topic => topic.id === topicId);
-    return topic ? topic.title : "";
+  const topic = topics.find(topic => topic.id === topicId);
+  return topic ? topic.title : "";
 }
-const setDataTable = (data) =>{
-    console.log("data", data)
-    const tbody = document.querySelector("#table-book tbody");
-    if (data.length > 0) {
-        const topicById = {};
-        topics.forEach(topic => {
-            topicById[topic.id] = topic.title;
-        });
-        tbody.innerHTML = "";
-        data.forEach((item, index) => {
-            const topicTitle = topicById[item.topic_id];
-            const row = document.createElement("tr");
-            row.innerHTML = `
+const setDataTable = (data) => {
+  console.log("data", data)
+  const tbody = document.querySelector("#table-book tbody");
+  if (data.length > 0) {
+    const topicById = {};
+    topics.forEach(topic => {
+      topicById[topic.id] = topic.title;
+    });
+    tbody.innerHTML = "";
+    data.forEach((item, index) => {
+      const topicTitle = topicById[item.topic_id];
+      const row = document.createElement("tr");
+      row.innerHTML = `
                 <td>${index + 1}</td>
                 <td>${item.name}</td>
                 <td>${item.author}</td>
@@ -177,39 +166,33 @@ const setDataTable = (data) =>{
                    <a id="delete-book" onclick="onClickModalDelete(${item.id}, '${item.name}')" class="delete-book">Delete</a>
                </td>
             `;
-            tbody.appendChild(row);
-        });
-    } else {
-        tbody.innerHTML = "";
-        const row = document.createElement("tr");
-        row.innerHTML = `
+      tbody.appendChild(row);
+    });
+  } else {
+    tbody.innerHTML = "";
+    const row = document.createElement("tr");
+    row.innerHTML = `
             <td colspan="5" >
                 <div class="no-data">
-                   <img src="./assets/empty.svg" alt="No data" >
-                        <p>No data</p>                       
-                     <button
-                        type="button"
-                        class="form-btn"
-                        id="btn-add-book"
-                        onclick="onClickModalAdd()"
-                      >
-                        Add Book
-                  </button>
+                        <p>No data</p>               
                 </div>
             </td>`;
-        tbody.appendChild(row);
-    }
+    tbody.appendChild(row);
+  }
 }
 const onClickDelete = () => {
-  const updatedBooks = books.filter(book => book.id !== idItem);
-  setDataTable(updatedBooks);
+  const index = books.findIndex(book => book.id === idItem);
+  if (index !== -1) {
+    books.splice(index, 1);
+    setDataTable(books);
+  }
   onClickModalDelete();
 }
 searchInput.addEventListener('change', (e) => {
-    const searchValue = e.target.value.trim().toLowerCase();
-    const filteredBooks = books.filter(book => {
-        const bookName = book.name.toLowerCase();
-        return bookName.includes(searchValue);
-    });
-    setDataTable(filteredBooks);
+  const searchValue = e.target.value.trim().toLowerCase();
+  const filteredBooks = books.filter(book => {
+    const bookName = book.name.toLowerCase();
+    return bookName.includes(searchValue);
+  });
+  setDataTable(filteredBooks);
 })
