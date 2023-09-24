@@ -34,7 +34,7 @@ const updateTitleModal = () => {
   btnSubmit.textContent = currentAction === "Edit" ? 'Save' : 'Create';
 }
 
-const onClickModalDelete = (id, name) => {
+const onOpenModalDelete = (id, name) => {
   idItem = id;
   deleteName.textContent = name;
   toggleModal(modalDelete, overlayDelete);
@@ -83,8 +83,8 @@ const onSubmitForm = () => {
   const author = document.getElementById("author").value;
   const topicId = document.getElementById("select-topic").value;
 
-  if (name.trim() === "" || author.trim() === "" || topicId === "null") {
-    alert("Please fill in all information and select a topic.");
+  if (name.trim() === "" || author.trim() === "" || topicId == "") {
+    alert("Enter full information! Please try again!");
     return;
   }
 
@@ -95,7 +95,7 @@ const onSubmitForm = () => {
       author,
       topic_id: parseInt(topicId),
     };
-
+    console.log(newBook)
     books.push(newBook);
 
     const tbody = document.querySelector("#table-book tbody");
@@ -106,8 +106,8 @@ const onSubmitForm = () => {
             <td>${newBook.author}</td>
             <td>${getTopicTitle(newBook.topic_id)}</td>
             <td>
-                <a id="edit-book" onclick="onClickModalEdit(${newBook.id}, '${newBook.name}', '${newBook.author}', ${newBook.topic_id})" class="edit-book">Edit</a>
-                <a id="delete-book" onclick="onClickModalDelete(${newBook.id}, '${newBook.name}')" class="delete-book">Delete</a>
+                <button id="edit-book" onclick="onOpenModalEdit(${books.id}, '${books.name}', '${books.author}', ${books.topic_id})" class="edit-book">Edit</button>
+                <button id="delete-book" onclick="onOpenModalDelete(${books.id}, '${books.name}')" class="delete-book">Delete</button>
             </td>
         `;
 
@@ -128,16 +128,21 @@ const onSubmitForm = () => {
   toggleModal();
   clearForm();
 }
-const onClickModalEdit = (id, name, author, topic_id) => {
+const onOpenModalEdit = (id, name, author, topic_id) => {
   currentAction = 'Edit';
   updateTitleModal();
   toggleModal(modalAdd, overlayAdd);
-  if (id && name && author && author) {
-    document.getElementById("name").value = name;
-    document.getElementById("author").value = author;
-    document.getElementById("select-topic").value = topic_id;
-    idItem = id;
+  fletchData();
 
+   function fletchData() {
+      // Your existing code here
+      if (id && name && author && topic_id) {
+        document.getElementById("name").value = name;
+        document.getElementById("author").value = author;
+        document.getElementById("select-topic").value = topic_id;
+        idItem = id;
+        resolve(); 
+      }
   }
 }
 const getTopicTitle = (topicId) => {
@@ -162,8 +167,8 @@ const setDataTable = (data) => {
                 <td>${item.author}</td>
                 <td>${topicTitle}</td>
                  <td>
-                   <a id="edit-book" onclick="onClickModalEdit(${item.id}, '${item.name}', '${item.author}', ${item.topic_id})" class="edit-book">Edit</a>
-                   <a id="delete-book" onclick="onClickModalDelete(${item.id}, '${item.name}')" class="delete-book">Delete</a>
+                   <button id="edit-book" onclick="onOpenModalEdit(${item.id}, '${item.name}', '${item.author}', ${item.topic_id})" class="edit-book">Edit</button>
+                   <button id="delete-book" onclick="onOpenModalDelete(${item.id}, '${item.name}')" class="delete-book">Delete</button>
                </td>
             `;
       tbody.appendChild(row);
@@ -186,7 +191,7 @@ const onClickDelete = () => {
     books.splice(index, 1);
     setDataTable(books);
   }
-  onClickModalDelete();
+  onOpenModalDelete();
 }
 searchInput.addEventListener('change', (e) => {
   const searchValue = e.target.value.trim().toLowerCase();

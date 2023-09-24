@@ -5,7 +5,7 @@
     This project will auto-refresh as you edit the HTML and CSS.
     
     -->
-    
+
     <!DOCTYPE html>
     <html>
     
@@ -39,13 +39,15 @@
       </header>
       <main class="container">
         <section class="section-table">
+          <button type="button" class="form-btn" id="btn-add-book" onclick="onClickModalAdd()">
+            Add Book
+          </button>
           <div class="table-search-add">
             <div>
-              <input id="search-input" name="search-book" class="form-input" type="search" placeholder="Search Book" />
+              <input id="search-input" name="search-book" class="form-input" type="search"
+                placeholder="Search Book Enter Action" />
             </div>
-            <button type="button" class="form-btn" id="btn-add-book" onclick="onClickModalAdd()">
-              Add Book
-            </button>
+    
           </div>
           <div style="overflow:auto;">
             <table id="table-book" class="table-book table-bordered">
@@ -102,13 +104,16 @@
             </p>
             <div class="modal-btn">
               <button onclick="onClickDelete ()" style="
-                    background-color: transparent !important;
-                    color: #212529;
-                    border: none;
-                  " type="button" class="form-btn">
+                        background-color: red;
+                        color: white;
+                      " type="button" class="form-btn">
                 Delete
               </button>
-              <button type="button" class="form-btn" id="btn-cancel">
+              <button style="
+                        background-color: transparent !important;
+                        color: #212529;
+                        border: none;
+                      " type="button" class="form-btn" id="btn-cancel">
                 Cancel
               </button>
             </div>
@@ -117,13 +122,14 @@
         </section>
       </main>
       <footer class="footer">
-        Copyright © 2023 |
+        Copyright © 2023 | <a href="https://github.com/datnguyencv/df-frontend-2023/tree/main/assignment-1"
+          style="text-decoration: none;">Dat Nguyen</a>
       </footer>
     
-            <script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
-            <script src="script.js"></script>
-            
+      <script src="https://replit.com/public/js/replit-badge-v2.js" theme="dark" position="bottom-right"></script>
+      <script src="script.js"></script>
+    
     </body>
-  
+    
     
     </html>
