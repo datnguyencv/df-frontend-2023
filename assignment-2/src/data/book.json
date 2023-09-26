@@ -1,0 +1,38 @@
+[
+    {
+        "id": 0,
+        "name": "Doraemon",
+        "author": "Fujiko Fujio",
+        "topic_id": "1"
+      },
+      {
+        "id": 1,
+        "name": "Refactoring",
+        "author": "Martin Fowler",
+        "topic_id": "3"
+      },
+    {
+      "id": 2,
+      "name": "To Kill a Mockingbird",
+      "author": "Harper Lee",
+      "topic_id": "2"
+    },
+    {
+      "id": 3,
+      "name": "1984",
+      "author": "George Orwell",
+      "topic_id": "4"
+    },
+    {
+      "id": 4,
+      "name": "Pride and Prejudice",
+      "author": "Jane Austen",
+      "topic_id": "2"
+    },
+    {
+      "id": 5,
+      "name": "The Great Gatsby",
+      "author": "F. Scott Fitzgerald",
+      "topic_id": "6"
+    }
+  ]
